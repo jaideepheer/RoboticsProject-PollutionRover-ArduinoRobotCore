@@ -12,8 +12,8 @@
  */
  
   // BT input/output pins
-    #define BT_PIN_OUT 7
-    #define BT_PIN_IN 8
+    #define BT_PIN_OUT 12
+    #define BT_PIN_IN 13
     #define BT_BAUDRATE 9600
   
   // DEBUG config, See _DEBUG_PRINT_, it is usefull.

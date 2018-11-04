@@ -11,10 +11,15 @@ void logicController::tick()
     {
       char msgChar = btSerial.read();
       // print debug feedback to serial
-        _DEBUG_PRINT_("Got message char.: ");
+        _DEBUG_PRINT_(F("Got message char.: "));
         _DEBUG_PRINT_(msgChar);
-        _DEBUG_PRINT_("\n");
+        _DEBUG_PRINT_(F("\n"));
     }
+  }
+  else
+  {
+    // BT Serial is not the current listener
+    _DEBUG_PRINT_(F("ERROR: BTSerial not listtening"));
   }
 }
 
