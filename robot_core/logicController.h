@@ -4,19 +4,15 @@
 
 // Include project configs
 #include"CONFIG_static.h"
-
-#include <SoftwareSerial.h>
+#include"PROTOCOLS.h"
 
 class logicController
 {
-  static SoftwareSerial btSerial;
   public:
-    // constructor to init. vars like btSerial
-    //logicController():btSerial(BT_PIN_IN, BT_PIN_OUT){}
     // loop update (called in loop())
-    static void tick();
-    // init. func.
-    static void init();
+    static void tick(struct SYSTEM_STATE &systemState);
+  private:
+    static void parse_BT_message(char &msgChar, struct SYSTEM_STATE &systemState);
 };
 
 #endif // __btMessenger_h__ include protector.
