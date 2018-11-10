@@ -3,14 +3,14 @@
     #include"CONFIG_static.h"
     #include"PROTOCOLS.h"
   // Include project modules. (header files for each module)
-    #include"logicController.h"
+    #include"controllerSynchronizer.h"
     // servo.h
     #include<Servo.h>
 //===============================================================
 
 // instantiate modules
   struct SYSTEM_STATE systemState = {};
-  typedef logicController logic;
+  typedef controllerSynchronizer btSync;
   
 // instantiate hardware
   Servo armJ1, armJ2, armRotate;
@@ -37,7 +37,7 @@
   void loop()
   {
     // allow modules to process data for this loop iteration.
-      logic::tick(systemState);
+      btSync::tick(systemState);
     // update hardware according to the systemState.
     {
         // Set arm position

@@ -2,7 +2,7 @@
 #ifndef __CONFIG_STATIC_H__
 #define __CONFIG_STATIC_H__
 
-//======================================= STATIC CONFIGS =======================================
+//===================================== STATIC H/W CONFIGS =====================================
 /**
  * Configs using #define pre-prosessor directives.
  * These are used to save memory since these values are replaced before compilation.
@@ -16,9 +16,9 @@
     #define BT_PIN_IN 13
     #define BT_BAUDRATE 9600
   // ARM output pins
-    #define ARM_J1_OUT 1
-    #define ARM_J2_OUT 2
-    #define ARM_ROTATE_OUT 3
+    #define ARM_J1_OUT 9
+    #define ARM_J2_OUT 10
+    #define ARM_ROTATE_OUT 11
   
   // DEBUG config, See _DEBUG_PRINT_, it is usefull.
   #ifndef __DEBUG_CONFIG__

@@ -6,15 +6,15 @@
 typedef uint8_t byte;
 
 //======================================= BT PROTOCOL ======================================
-  enum BT_MESSAGE : byte
+#define BT_MAX_JUNK_READ 7
+#define BT_SET_SYSTEM_STATE_MESSAGE_SIZE 8
+#define BT_PARSE_BUFFER_SIZE 16
+  enum BT_MESSAGE_BYTES : byte
   {
-    NONE,
-    // CAR commands are followed by int8_t (8bit int) ranging from -128 to 127
-    // [+ve is{ forward, anti-clockwise }]; [-ve is{ backward, clockwise }]
-    MOVE_CAR, TURN_CAR,
-    // ARM commands are followed by byte (8bit unsigned int) ranging from 0 to 255
-    // the following no. indicates the required servo position.
-    ARM_J1_MOVE, ARM_J2_MOVE, ARM_TURN
+    // These are the message elements found in BT messages.
+    HEADER = 0xFA, FOOTER = 0xFF,
+    READY_MESSAGE = 0xA1, SET_SYSTEM_STATE = 0xF1,
+    BLANK_MESSAGE_TYPE = 0xFF
   };
 //==========================================================================================
 
@@ -22,10 +22,10 @@ typedef uint8_t byte;
   struct SYSTEM_STATE
   {
     // [+ve is{ forward, anit-clockwise }]; [-ve is{ backward, clockwise }]
-    // -128 to 127
+    // -128 to 127 (valid only from -100 to 100)
     int8_t carMove;
     int8_t carTurn;
-    // 0 to 255
+    // 0 to 255 (valid only from 0 to 180)
     byte armJ1Pos, armJ2Pos, armRotation;
   };
 //==========================================================================================
