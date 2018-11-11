@@ -9,9 +9,13 @@ static byte controllerSynchronizer::messageType = BLANK_MESSAGE_TYPE;
 static void controllerSynchronizer::sendReadyMessage()
 {
   Serial.write(0xFA);
+  Serial.write(0xA1);
   //Sending the temperature value everytime while sending the ready message
   // The value needs to be converted back to decimal to obtain original value in App sides
-  Serial.write(tempinc.temperature,HEX);
+  Serial.write(airTempSensor.temperature);
+  Serial.write(airTempSensor.gas_lpg);
+  Serial.write(airTempSensor.gas_co);
+  Serial.write(airTempSensor.gas_smoke);
   Serial.write(0xFF);
 }
 
