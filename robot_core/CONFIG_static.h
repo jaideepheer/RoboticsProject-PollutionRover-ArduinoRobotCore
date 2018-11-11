@@ -12,13 +12,18 @@
  */
  
   // BT input/output pins
-    #define BT_PIN_OUT 12
-    #define BT_PIN_IN 13
+    #define BT_PIN_OUT 1
+    #define BT_PIN_IN 0
     #define BT_BAUDRATE 9600
   // ARM output pins
     #define ARM_J1_OUT 9
     #define ARM_J2_OUT 10
     #define ARM_ROTATE_OUT 11
+  // Car motor pins
+    #define CAR_LEFT_MOTOR_OUT_1 A0
+    #define CAR_LEFT_MOTOR_OUT_2 A1
+    #define CAR_RIGHT_MOTOR_OUT_1 A2
+    #define CAR_RIGHT_MOTOR_OUT_2 A3
   
   // DEBUG config, See _DEBUG_PRINT_, it is usefull.
   #ifndef __DEBUG_CONFIG__
