@@ -1,5 +1,5 @@
 #include"controllerSynchronizer.h"
-
+#include"sensor.cpp"
 // init. vars
 static int controllerSynchronizer::bytesRead = 0;
 static bool controllerSynchronizer::insideMessage = false;

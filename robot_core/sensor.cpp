@@ -21,7 +21,7 @@
 
 /*****************************Globals***********************************************/
 //================Following functions are related to the Air Quality Sensor
-
+//struct SENSOR airTempSensor = {};
 
 
 /****************** MQResistanceCalculation ****************************************
@@ -31,6 +31,10 @@ Remarks: The sensor and the load resistor forms a voltage divider. Given the vol
          across the load resistor and its resistance, the resistance of the sensor
          could be derived.
 ************************************************************************************/ 
+float Sensor:: LPGCurve[3]  =  {2.3,0.21,-0.47}; 
+float Sensor:: COCurve[3]  =  {2.3,0.72,-0.34};
+float Sensor:: SmokeCurve[3] ={2.3,0.53,-0.44};  
+ float Sensor :: Ro =  10;  
 float Sensor::MQResistanceCalculation(int raw_adc)
 {
   return ( ((float)RL_VALUE*(1023-raw_adc)/raw_adc));

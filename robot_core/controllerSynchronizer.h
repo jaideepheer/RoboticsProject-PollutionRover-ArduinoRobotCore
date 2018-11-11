@@ -6,6 +6,7 @@
 #include"CONFIG_static.h"
 #include"PROTOCOLS.h"
 #include"sensor.h"
+
 class controllerSynchronizer
 {
   public:
