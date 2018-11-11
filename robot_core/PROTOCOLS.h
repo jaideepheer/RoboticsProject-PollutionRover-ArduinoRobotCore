@@ -29,5 +29,4 @@ typedef uint8_t byte;
     byte armJ1Pos, armJ2Pos, armRotation;
   };
 //==========================================================================================
-
 #endif // __PROTOCOLS_H__

@@ -5,6 +5,7 @@
 // Include project configs
 #include"CONFIG_static.h"
 #include"PROTOCOLS.h"
+#include"sensor.h"
 
 class controllerSynchronizer
 {
