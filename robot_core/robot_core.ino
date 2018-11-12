@@ -19,7 +19,7 @@ DallasTemperature sensors(&onewire);
 
 // instantiate modules
   struct SYSTEM_STATE systemState = {};
- 
+  //struct SENSOR airTempSensor = {};
   typedef controllerSynchronizer btSync;
   
 // instantiate hardware
@@ -66,7 +66,7 @@ DallasTemperature sensors(&onewire);
     sensors.requestTemperatures();
     
     // Sensor Tick 
-    Sensor::tick(airTempSensor,(int8_t)sensors.getTempCByIndex(0));
+    Sensor::tick(Sensor::airTempSensor,(int8_t)sensors.getTempCByIndex(0));
     
     // allow modules to process data for this loop iteration.   
       // === Sensor Tick Complete ===========

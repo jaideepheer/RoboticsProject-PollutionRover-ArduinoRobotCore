@@ -22,7 +22,7 @@
   // Temperature Sensor Pin
     #define TEMP_SENSOR 5
   // Air Quality Analog pin
-  #define MQ_PIN A0
+  #define MQ_PIN A5
   
   // DEBUG config, See _DEBUG_PRINT_, it is usefull.
   #ifndef __DEBUG_CONFIG__

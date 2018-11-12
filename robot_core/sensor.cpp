@@ -21,8 +21,8 @@
 
 /*****************************Globals***********************************************/
 //================Following functions are related to the Air Quality Sensor
-//struct SENSOR airTempSensor = {};
 
+//struct SENSOR airTempSensor = {};
 
 /****************** MQResistanceCalculation ****************************************
 Input:   raw_adc - raw value read from adc, which represents the voltage

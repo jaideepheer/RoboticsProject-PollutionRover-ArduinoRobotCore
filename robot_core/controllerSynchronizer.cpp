@@ -1,10 +1,10 @@
 #include"controllerSynchronizer.h"
-#include"sensor.cpp"
 // init. vars
 static int controllerSynchronizer::bytesRead = 0;
 static bool controllerSynchronizer::insideMessage = false;
 static byte controllerSynchronizer::messageBuffer[BT_PARSE_BUFFER_SIZE];
 static byte controllerSynchronizer::messageType = BLANK_MESSAGE_TYPE;
+struct SENSOR Sensor :: airTempSensor = {0,0,0,0};
 
 static void controllerSynchronizer::sendReadyMessage()
 {
@@ -12,10 +12,10 @@ static void controllerSynchronizer::sendReadyMessage()
   Serial.write(0xA1);
   //Sending the temperature value everytime while sending the ready message
   // The value needs to be converted back to decimal to obtain original value in App sides
-  Serial.write(airTempSensor.temperature);
-  Serial.write(airTempSensor.gas_lpg);
-  Serial.write(airTempSensor.gas_co);
-  Serial.write(airTempSensor.gas_smoke);
+  Serial.write(Sensor::airTempSensor.temperature);
+  Serial.write(Sensor::airTempSensor.gas_lpg);
+  Serial.write(Sensor::airTempSensor.gas_co);
+  Serial.write(Sensor::airTempSensor.gas_smoke);
   Serial.write(0xFF);
 }
 

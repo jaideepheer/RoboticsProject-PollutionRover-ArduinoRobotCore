@@ -8,10 +8,11 @@ struct SENSOR
   uint16_t gas_co,gas_lpg,gas_smoke;
   int8_t temperature;  
 };
- struct SENSOR airTempSensor={};
+ //struct SENSOR airTempSensor={};
 class Sensor
 {
   public:
+  static struct SENSOR airTempSensor;
   static float LPGCurve[3];   //two points are taken from the curve. 
                                                     //with these two points, a line is formed which is "approximately equivalent"
                                                     //to the original curve. 
