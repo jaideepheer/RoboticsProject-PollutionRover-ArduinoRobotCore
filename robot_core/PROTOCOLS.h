@@ -2,6 +2,8 @@
 #ifndef __PROTOCOLS_H__
 #define __PROTOCOLS_H__
 
+// include standard int types
+#include<stdint.h>
 // define byte
 typedef uint8_t byte;
 
@@ -19,6 +21,8 @@ typedef uint8_t byte;
 //==========================================================================================
 
 //====================================== SYSTEM STATE ======================================
+#define CAR_MOVE_BINARY_CUT_OFF 30
+#define CAR_TURN_BINARY_CUT_OFF 30
   struct SYSTEM_STATE
   {
     // [+ve is{ forward, anit-clockwise }]; [-ve is{ backward, clockwise }]

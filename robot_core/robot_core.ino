@@ -17,6 +17,9 @@
 OneWire onewire(TEMP_SENSOR);
 DallasTemperature sensors(&onewire);
 
+// define helper functions
+  void getCarMotorPinNibble(byte &nibble);
+  byte carMotorPinNibble = 0x00;
 // instantiate modules
   struct SYSTEM_STATE systemState = {};
   //struct SENSOR airTempSensor = {};
@@ -31,9 +34,12 @@ DallasTemperature sensors(&onewire);
   void setup()
   {
     // initialize modules
-      // nothing here
       
     // initialize hardware
+      pinMode(CAR_LEFT_MOTOR_OUT_1, OUTPUT);
+      pinMode(CAR_LEFT_MOTOR_OUT_2, OUTPUT);
+      pinMode(CAR_RIGHT_MOTOR_OUT_1, OUTPUT);
+      pinMode(CAR_RIGHT_MOTOR_OUT_2, OUTPUT);
       armJ1.attach(ARM_J1_OUT);
       armJ2.attach(ARM_J2_OUT);
       armRotate.attach(ARM_ROTATE_OUT);
@@ -78,6 +84,73 @@ DallasTemperature sensors(&onewire);
           armJ2.write(systemState.armJ2Pos);
           armRotate.write(systemState.armRotation);
         // Set car motion
+          setCarMotorPinNibble(carMotorPinNibble);
+          Serial.write("nb: ");Serial.write(carMotorPinNibble);
+          digitalWrite(CAR_RIGHT_MOTOR_OUT_1, (carMotorPinNibble & B00000001) > 0?HIGH:LOW);
+          digitalWrite(CAR_RIGHT_MOTOR_OUT_2, (carMotorPinNibble & B00000010) > 0?HIGH:LOW);
+          digitalWrite(CAR_LEFT_MOTOR_OUT_1, (carMotorPinNibble & B00000100) > 0?HIGH:LOW);
+          digitalWrite(CAR_LEFT_MOTOR_OUT_2, (carMotorPinNibble & B00001000) > 0?HIGH:LOW);
     }
+  }
+//===============================================================
+//                            HELPERS
+//===============================================================
+  void setCarMotorPinNibble(byte &nibble)
+  {
+    // reset nibble
+      nibble = 0x00;
+    // Set nibble
+      if(systemState.carMove > CAR_MOVE_BINARY_CUT_OFF)
+      {
+        // Forward
+        if(systemState.carTurn > CAR_TURN_BINARY_CUT_OFF)
+        {
+          // Right
+          nibble = B00001000;
+        }
+        else if(-systemState.carTurn > CAR_TURN_BINARY_CUT_OFF)
+        {
+          // Left
+          nibble = B00000010;
+        }
+        else
+        {
+          // no turn
+          nibble = B00001010;
+        }
+      }
+      else if(-systemState.carMove > CAR_MOVE_BINARY_CUT_OFF)
+      {
+        // Backward
+        if(systemState.carTurn > CAR_TURN_BINARY_CUT_OFF)
+        {
+          // Right
+          nibble = B00000100;
+        }
+        else if(-systemState.carTurn > CAR_TURN_BINARY_CUT_OFF)
+        {
+          // Left
+          nibble = B00000001;
+        }
+        else
+        {
+          // no turn
+          nibble = B00000101;
+        }
+      }
+      else
+      {
+        // no movement, check turn
+        if(systemState.carTurn > CAR_TURN_BINARY_CUT_OFF)
+        {
+          // Right
+          nibble = B00001001;
+        }
+        else if(-systemState.carTurn > CAR_TURN_BINARY_CUT_OFF)
+        {
+          // Left
+          nibble = B00000110;
+        }
+      }
   }
 //===============================================================

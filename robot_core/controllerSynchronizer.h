@@ -19,6 +19,7 @@ class controllerSynchronizer
     static bool insideMessage;
     static byte messageType;
     static byte messageBuffer[BT_PARSE_BUFFER_SIZE];
+    static bool readyMessageScheduled;
   // functions
     static bool parseAndCheckMessage(bool &insideMessage, const int messageLength);
     static void handleSetSystemStateMessage(struct SYSTEM_STATE &systemState);
