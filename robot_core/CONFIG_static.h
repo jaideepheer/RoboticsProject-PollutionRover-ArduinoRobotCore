@@ -20,10 +20,10 @@
     #define ARM_J2_OUT 10
     #define ARM_ROTATE_OUT 11
   // Car motor pins
-    #define CAR_LEFT_MOTOR_OUT_1 A0
-    #define CAR_LEFT_MOTOR_OUT_2 A1
-    #define CAR_RIGHT_MOTOR_OUT_1 A2
-    #define CAR_RIGHT_MOTOR_OUT_2 A3
+    #define CAR_RIGHT_MOTOR_OUT_1 A0
+    #define CAR_RIGHT_MOTOR_OUT_2 A1
+    #define CAR_LEFT_MOTOR_OUT_1 A2
+    #define CAR_LEFT_MOTOR_OUT_2 A3
   
   // DEBUG config, See _DEBUG_PRINT_, it is usefull.
   #ifndef __DEBUG_CONFIG__

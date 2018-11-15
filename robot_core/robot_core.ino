@@ -22,7 +22,6 @@
   void setup()
   {
     // initialize modules
-      // nothing here
       
     // initialize hardware
       pinMode(CAR_LEFT_MOTOR_OUT_1, OUTPUT);
@@ -53,15 +52,16 @@
           armRotate.write(systemState.armRotation);
         // Set car motion
           setCarMotorPinNibble(carMotorPinNibble);
-          digitalWrite(CAR_LEFT_MOTOR_OUT_1, carMotorPinNibble &  B00000001);
-          digitalWrite(CAR_LEFT_MOTOR_OUT_2, carMotorPinNibble &  B00000010);
-          digitalWrite(CAR_RIGHT_MOTOR_OUT_1, carMotorPinNibble & B00000100);
-          digitalWrite(CAR_RIGHT_MOTOR_OUT_2, carMotorPinNibble & B00001000);
+          Serial.write("nb: ");Serial.write(carMotorPinNibble);
+          digitalWrite(CAR_RIGHT_MOTOR_OUT_1, (carMotorPinNibble & B00000001) > 0?HIGH:LOW);
+          digitalWrite(CAR_RIGHT_MOTOR_OUT_2, (carMotorPinNibble & B00000010) > 0?HIGH:LOW);
+          digitalWrite(CAR_LEFT_MOTOR_OUT_1, (carMotorPinNibble & B00000100) > 0?HIGH:LOW);
+          digitalWrite(CAR_LEFT_MOTOR_OUT_2, (carMotorPinNibble & B00001000) > 0?HIGH:LOW);
     }
   }
 //===============================================================
-
-//========================= HELPERS =============================
+//                            HELPERS
+//===============================================================
   void setCarMotorPinNibble(byte &nibble)
   {
     // reset nibble
@@ -73,12 +73,12 @@
         if(systemState.carTurn > CAR_TURN_BINARY_CUT_OFF)
         {
           // Right
-          nibble = B00000010;
+          nibble = B00001000;
         }
         else if(-systemState.carTurn > CAR_TURN_BINARY_CUT_OFF)
         {
           // Left
-          nibble = B00001000;
+          nibble = B00000010;
         }
         else
         {
@@ -92,12 +92,12 @@
         if(systemState.carTurn > CAR_TURN_BINARY_CUT_OFF)
         {
           // Right
-          nibble = B00000010;
+          nibble = B00000100;
         }
         else if(-systemState.carTurn > CAR_TURN_BINARY_CUT_OFF)
         {
           // Left
-          nibble = B00001000;
+          nibble = B00000001;
         }
         else
         {

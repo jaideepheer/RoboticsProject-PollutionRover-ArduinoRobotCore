@@ -5,12 +5,16 @@ static int controllerSynchronizer::bytesRead = 0;
 static bool controllerSynchronizer::insideMessage = false;
 static byte controllerSynchronizer::messageBuffer[BT_PARSE_BUFFER_SIZE];
 static byte controllerSynchronizer::messageType = BLANK_MESSAGE_TYPE;
+static bool controllerSynchronizer::readyMessageScheduled = false;
 
 static void controllerSynchronizer::sendReadyMessage()
 {
   Serial.write(0xFA);
   Serial.write(0xA1);
   Serial.write(0xFF);
+
+  // reset readyMessageRetryCounter
+  readyMessageScheduled = false;
 }
 
 static void controllerSynchronizer::handleSetSystemStateMessage(struct SYSTEM_STATE &systemState)
@@ -22,7 +26,7 @@ static void controllerSynchronizer::handleSetSystemStateMessage(struct SYSTEM_ST
   systemState.armJ2Pos = messageBuffer[3];
   systemState.armRotation = messageBuffer[4];
   // send ready message
-  sendReadyMessage();
+  readyMessageScheduled = true;
 }
 
 /*
@@ -106,6 +110,11 @@ void controllerSynchronizer::tick(struct SYSTEM_STATE &systemState)
             break;
         }
       }
+    }
+    // Send ready message
+    if(readyMessageScheduled)
+    {
+      sendReadyMessage();
     }
   }
   else
