@@ -2,20 +2,12 @@
   // Include project configs
     #include"CONFIG_static.h"
     #include"PROTOCOLS.h"
-     #include"sensor.h"
-     // Include project modules. (header files for each module)
+  // Include project modules. (header files for each module)
     #include"controllerSynchronizer.h"
-    // servo.h
+    #include"tempSensor.h"
+    #include"sensor.h"
     #include<Servo.h>
-     // The essential header file for Temp Sensor
-    
-    #include <OneWire.h>
-     // Temperature Calculator Library
-    #include <DallasTemperature.h>
 //===============================================================
-
-OneWire onewire(TEMP_SENSOR);
-DallasTemperature sensors(&onewire);
 
 // define helper functions
   void getCarMotorPinNibble(byte &nibble);
@@ -27,8 +19,6 @@ DallasTemperature sensors(&onewire);
   
 // instantiate hardware
   Servo armJ1, armJ2, armRotate;
-// instantiate the requirements for temp sensor
-
   
 //============================ SETUP ============================
   void setup()
@@ -45,37 +35,32 @@ DallasTemperature sensors(&onewire);
       armRotate.attach(ARM_ROTATE_OUT);
       
     // Starting sensing the temperature
-      sensors.begin();
+      tempSensor::init(12);
       
     //===Following Lines for the Air Sensor==================
-      Serial.print("Calibrating...\n");                
+      /*Serial.print("Calibrating...\n");                
       Sensor:: Ro = Sensor::MQCalibration(MQ_PIN);   //Calibrating the sensor. Please make sure the sensor is in clean air 
                                                     //when you perform the calibration                    
       Serial.print("Calibration is done...\n"); 
       Serial.print("Ro=");
       Serial.print(Sensor::Ro);
       Serial.print("kohm");
-      Serial.print("\n");
-      
-     //====Air Sensor Calibration Complete=========
-    // DEBUG init.
-    #if __DEBUG_ENABLED__
-      Serial.begin(9600);
-    #endif
+      Serial.print("\n");*/
+    //====Air Sensor Calibration Complete=========
+    
+    // Start serial 
+    Serial.begin(9600);
   }
 //===============================================================
 
 //============================ LOOP =============================
   void loop()
   {
-    //Temperature sensor comanded to return the temperature
-    sensors.requestTemperatures();
-    
-    // Sensor Tick 
-    Sensor::tick(Sensor::airTempSensor,(int8_t)sensors.getTempCByIndex(0));
-    
-    // allow modules to process data for this loop iteration.   
-      // === Sensor Tick Complete ===========
+    // Fetch temperature from the sensor
+      tempSensor::tick(systemState);
+    // Air sensor tick
+      //Sensor::tick(Sensor::airTempSensor,(int8_t)sensors.getTempCByIndex(0));
+    // BT tick
       btSync::tick(systemState);
     // update hardware according to the systemState.
     {
@@ -85,7 +70,6 @@ DallasTemperature sensors(&onewire);
           armRotate.write(systemState.armRotation);
         // Set car motion
           setCarMotorPinNibble(carMotorPinNibble);
-          Serial.write("nb: ");Serial.write(carMotorPinNibble);
           digitalWrite(CAR_RIGHT_MOTOR_OUT_1, (carMotorPinNibble & B00000001) > 0?HIGH:LOW);
           digitalWrite(CAR_RIGHT_MOTOR_OUT_2, (carMotorPinNibble & B00000010) > 0?HIGH:LOW);
           digitalWrite(CAR_LEFT_MOTOR_OUT_1, (carMotorPinNibble & B00000100) > 0?HIGH:LOW);

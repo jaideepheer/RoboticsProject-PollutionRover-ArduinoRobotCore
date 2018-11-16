@@ -21,9 +21,9 @@
     #define ARM_ROTATE_OUT 11
     
   // Temperature Sensor Pin
-    #define TEMP_SENSOR 5
+    #define TEMP_SENSOR 2
   // Air Quality Analog pin
-  #define MQ_PIN A5
+    #define MQ_PIN A5
   
   // Car motor pins
     #define CAR_RIGHT_MOTOR_OUT_1 A0

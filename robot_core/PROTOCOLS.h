@@ -31,6 +31,9 @@ typedef uint8_t byte;
     int8_t carTurn;
     // 0 to 255 (valid only from 0 to 180)
     byte armJ1Pos, armJ2Pos, armRotation;
+
+    // Sensors
+    byte temperature;
   };
 //==========================================================================================
 #endif // __PROTOCOLS_H__

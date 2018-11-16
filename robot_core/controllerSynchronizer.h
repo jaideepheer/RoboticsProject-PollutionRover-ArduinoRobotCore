@@ -23,7 +23,7 @@ class controllerSynchronizer
   // functions
     static bool parseAndCheckMessage(bool &insideMessage, const int messageLength);
     static void handleSetSystemStateMessage(struct SYSTEM_STATE &systemState);
-    static void sendReadyMessage();
+    static void sendReadyMessage(struct SYSTEM_STATE &systemState);
   // helpers
     static bool findByteInSerial(byte b);
 };

@@ -7,19 +7,17 @@ static byte controllerSynchronizer::messageType = BLANK_MESSAGE_TYPE;
 struct SENSOR Sensor :: airTempSensor = {0,0,0,0};
 static bool controllerSynchronizer::readyMessageScheduled = false;
 
-static void controllerSynchronizer::sendReadyMessage()
+static void controllerSynchronizer::sendReadyMessage(struct SYSTEM_STATE &systemState)
 {
   Serial.write(0xFA);
   Serial.write(0xA1);
-  //Sending the temperature value everytime while sending the ready message
-  // The value needs to be converted back to decimal to obtain original value in App sides
-  Serial.write(Sensor::airTempSensor.temperature);
-  Serial.write(Sensor::airTempSensor.gas_lpg);
+  Serial.write(systemState.temperature);
+  /*Serial.write(Sensor::airTempSensor.gas_lpg);
   Serial.write(Sensor::airTempSensor.gas_co);
-  Serial.write(Sensor::airTempSensor.gas_smoke);
+  Serial.write(Sensor::airTempSensor.gas_smoke);*/
   Serial.write(0xFF);
 
-  // reset readyMessageRetryCounter
+  // reset readyMessageScheduled
   readyMessageScheduled = false;
 }
 
@@ -120,7 +118,7 @@ void controllerSynchronizer::tick(struct SYSTEM_STATE &systemState)
     // Send ready message
     if(readyMessageScheduled)
     {
-      sendReadyMessage();
+      sendReadyMessage(systemState);
     }
   }
   else
