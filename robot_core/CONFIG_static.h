@@ -1,7 +1,7 @@
 // Include protector.
 #ifndef __CONFIG_STATIC_H__
 #define __CONFIG_STATIC_H__
-
+#include<Arduino.h>
 //===================================== STATIC H/W CONFIGS =====================================
 /**
  * Configs using #define pre-prosessor directives.
@@ -19,6 +19,17 @@
     #define ARM_J1_OUT 9
     #define ARM_J2_OUT 10
     #define ARM_ROTATE_OUT 11
+    // ARM initial values
+      #define ARM_J1_INIT (byte)100
+      #define ARM_J2_INIT (byte)150
+      #define ARM_ROTATE_INIT (byte)80
+    // ARM move limits
+      #define ARM_J1_LIMIT_MIN (byte)35
+      #define ARM_J1_LIMIT_MAX (byte)160
+      #define ARM_J2_LIMIT_MIN (byte)0
+      #define ARM_J2_LIMIT_MAX (byte)180
+      #define ARM_ROTATE_LIMIT_MIN (byte)0
+      #define ARM_ROTATE_LIMIT_MAX (byte)180
     
   // Temperature Sensor Pin
     #define TEMP_SENSOR 2
@@ -35,7 +46,7 @@
   #ifndef __DEBUG_CONFIG__
     // enable/disable debugging.
     // Saves a LOT of memory when disabled.
-    #define __DEBUG_ENABLED__ true
+    #define __DEBUG_ENABLED__ false
     #define __DEBUG_SERIAL__ Serial // the serial to print debug data to.
     
 //==============================================================================================
@@ -45,10 +56,6 @@
       #define _DEBUG_PRINT_(X) __DEBUG_SERIAL__.print(X)
     #else
       #define _DEBUG_PRINT_(X)  
-    #endif
-    // To use Serial as debug serial.
-    #if __DEBUG_ENABLED__
-      #include<Arduino.h>
     #endif
   #endif
 

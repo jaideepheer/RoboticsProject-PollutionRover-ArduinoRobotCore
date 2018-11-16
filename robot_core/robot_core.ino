@@ -3,10 +3,10 @@
     #include"CONFIG_static.h"
     #include"PROTOCOLS.h"
   // Include project modules. (header files for each module)
+    #include<Servo.h>
     #include"controllerSynchronizer.h"
     #include"tempSensor.h"
     #include"sensor.h"
-    #include<Servo.h>
 //===============================================================
 
 // define helper functions
@@ -30,6 +30,13 @@
       pinMode(CAR_LEFT_MOTOR_OUT_2, OUTPUT);
       pinMode(CAR_RIGHT_MOTOR_OUT_1, OUTPUT);
       pinMode(CAR_RIGHT_MOTOR_OUT_2, OUTPUT);
+      // Reset arm init. position
+        armJ1.write(ARM_J1_INIT);
+        armJ2.write(ARM_J2_INIT);
+        armRotate.write(ARM_ROTATE_INIT);
+        systemState.armJ1Pos = ARM_J1_INIT;
+        systemState.armJ2Pos = ARM_J2_INIT;
+        systemState.armRotation = ARM_ROTATE_INIT;
       armJ1.attach(ARM_J1_OUT);
       armJ2.attach(ARM_J2_OUT);
       armRotate.attach(ARM_ROTATE_OUT);

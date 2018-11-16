@@ -11,6 +11,7 @@ typedef uint8_t byte;
 #define BT_MAX_JUNK_READ 7
 #define BT_SET_SYSTEM_STATE_MESSAGE_SIZE 8
 #define BT_PARSE_BUFFER_SIZE 16
+#define BT_DISCONNECT_TIMEOUT_MILLIS 1800
   enum BT_MESSAGE_BYTES : byte
   {
     // These are the message elements found in BT messages.

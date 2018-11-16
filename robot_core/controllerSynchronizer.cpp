@@ -1,4 +1,16 @@
+//===============================================================
+//                            HELPERS
+//===============================================================
+  template<class T>
+    void clip(const T minVal, T &value, const T maxVal)
+    {
+      if(value < minVal) value = minVal;
+      else if(value > maxVal) value = maxVal;
+    }
+//===============================================================
+
 #include"controllerSynchronizer.h"
+
 // init. vars
 static int controllerSynchronizer::bytesRead = 0;
 static bool controllerSynchronizer::insideMessage = false;
@@ -6,6 +18,17 @@ static byte controllerSynchronizer::messageBuffer[BT_PARSE_BUFFER_SIZE];
 static byte controllerSynchronizer::messageType = BLANK_MESSAGE_TYPE;
 struct SENSOR Sensor :: airTempSensor = {0,0,0,0};
 static bool controllerSynchronizer::readyMessageScheduled = false;
+static unsigned long controllerSynchronizer::lastStateMessageTimestamp = -1L;
+
+static void controllerSynchronizer::handleDisconnect(struct SYSTEM_STATE &systemState)
+{
+  // reset ARM position
+    systemState.carMove = 0;
+    systemState.carTurn = 0;
+    systemState.armJ1Pos = ARM_J1_INIT;
+    systemState.armJ2Pos = ARM_J2_INIT;
+    systemState.armRotation = ARM_ROTATE_INIT;
+}
 
 static void controllerSynchronizer::sendReadyMessage(struct SYSTEM_STATE &systemState)
 {
@@ -24,12 +47,17 @@ static void controllerSynchronizer::sendReadyMessage(struct SYSTEM_STATE &system
 static void controllerSynchronizer::handleSetSystemStateMessage(struct SYSTEM_STATE &systemState)
 {
   // messageBuffer has message without the first two bytes (header and type).
-  systemState.carMove = messageBuffer[0];
-  systemState.carTurn = messageBuffer[1];
-  systemState.armJ1Pos = messageBuffer[2];
-  systemState.armJ2Pos = messageBuffer[3];
-  systemState.armRotation = messageBuffer[4];
+    systemState.carMove = messageBuffer[0];
+    systemState.carTurn = messageBuffer[1];
+    systemState.armJ1Pos = messageBuffer[2];
+    systemState.armJ2Pos = messageBuffer[3];
+    systemState.armRotation = messageBuffer[4];
+  // Ensure HW limits
+    clip(ARM_J1_LIMIT_MIN, systemState.armJ1Pos, ARM_J1_LIMIT_MAX);
+    clip(ARM_J2_LIMIT_MIN, systemState.armJ2Pos, ARM_J2_LIMIT_MAX);
+    clip(ARM_ROTATE_LIMIT_MIN, systemState.armRotation, ARM_ROTATE_LIMIT_MAX);
   // send ready message
+  lastStateMessageTimestamp = millis();
   readyMessageScheduled = true;
 }
 
@@ -119,6 +147,11 @@ void controllerSynchronizer::tick(struct SYSTEM_STATE &systemState)
     if(readyMessageScheduled)
     {
       sendReadyMessage(systemState);
+    }
+    // Handle disconnect
+    if(millis()-lastStateMessageTimestamp >= BT_DISCONNECT_TIMEOUT_MILLIS)
+    {
+      handleDisconnect(systemState);
     }
   }
   else
